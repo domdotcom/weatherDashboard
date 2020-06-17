@@ -31,29 +31,52 @@ $(document).ready(function() {
                 // history of search
                 if (history.indexOf(city) === -1){
                     history.push(data.name)
-                    console.log(data.name);
+                    // console.log(data.name);
                     window.localStorage.setItem('history',JSON.stringify(history))
 
                     addRow(city);
                 }
+                console.log(data);
+                // console.log(data.name);
+                // console.log(data.main.temp);
+                // console.log(data.main.humidity);
+                // console.log(data.wind.speed);
+                // console.log(data.weather[0].icon);
+                // clear old search
+                $('#today').empty();
 
-                console.log(data.name);
-                console.log(data.main.temp);
-                console.log(data.main.humidity);
-                console.log(data.wind.speed);
-            
                 // create html content for current weather
-                var card = $('<div>').addClass('card')
-                var city = $('h3').addClass()
+                var card = $('<div>').addClass('card');
+                var city = $('<h3>').addClass('card-text').text(data.name);
+                // var time = $('h4').addClas('card-text').text(data.list[i].dt_txt);
+                var cardBody = $('<div>').addClass('card-body');
+                var img = $('<img>').attr('src', 'http://openweathermap.org/img/w/' + data.weather[0].icon + '.png');
+                var wind = $('<p>').addClass('card-text').text('Wind Speed: ' + data.wind.speed + 'MPH');
+                var humidity = $('<p>').addClass('card-text').text('Humidity: ' + data.main.humidity + '%');
+                var temp = $('<p>').addClass('card-text').text('Temperature: ' + data.main.temp + '°F'); 
+
+                //  append to card
+                city.append(img);
+                cardBody.append(city, temp, humidity, wind);
+                card.append(cardBody);
+                $("#today").append(card);
+
+                // weatherForecast();
+                showUvIndex(data.coord.lat, data.coord.lat);
             }
         });              
     }
 
+    function addRow(text){
+        var searchList = $('<li>').addClass('list-group-item list-group-item-action').text(text);
+        $('.history').append(searchList);
+    }
+
     function weatherForecast(city) {
         $.ajax({
-            type: "GET",
-            url: "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=374a9e846e70146d664eee11c467da0b",
-            dataType: "json",
+            type: 'GET',
+            url: "https://api.openweathermap.org/data/2.5/forecast?q=" + city + '&units=imperial&appid=374a9e846e70146d664eee11c467da0b',
+            dataType: 'json',
             success: function(data) {
                 // overwrite existing search content 
             
@@ -64,16 +87,35 @@ $(document).ready(function() {
         });
     }
 
-    function getUvIndex(lat,lon) {
+  
+    function showUvIndex(lat,lon) {
+
         $.ajax({
-            type: "GET",
-            url: "http://api.openweathermap.org/data/2.5/uvi?appid=374a9e846e70146d664eee11c467da0b&lat=" + lat + "&lon=" + lon,
-            dataType: "json",
+            type: 'GET',
+            url: "http://api.openweathermap.org/data/2.5/uvi?appid=374a9e846e70146d664eee11c467da0b&lat=" + lat + '&lon=' + lon,
+            dataType: 'json',
             success: function(data) {
-                var lat = data.coord.lat;
-                var lon = data.coord.lon;
-                // add uv index to card
-                // change color of uv index based on number, green yellow or red
+                
+                console.log(data);
+                console.log(data.value);
+                var uvValue = $('<p>').addClass('card-text').text('UV Index: ');
+                var btn = $('<p>').addClass('btn btn-sm').text(data.value);
+                
+                // change color depending on uv value
+                if (data.value <= 2) {
+                    btn.css('background-color', 'green');
+                    btn.css('margin-bottom', '0');
+                }
+                else if (data.value >= 8) {
+                    btn.css('background-color', 'red');
+                    btn.css('margin-bottom', '0');
+                }
+                else {
+                    btn.css('background-color', 'yellow');
+                    btn.css('margin-bottom', '0');
+                }
+                
+                $("#today .card-body").append(uvValue.append(btn));
             }
         });
     }
