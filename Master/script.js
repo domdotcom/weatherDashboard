@@ -10,8 +10,6 @@
 // upon opening dashboard the last city searched is presented
 
 
-
-
 $(document).ready(function() {
     
     $('#search-button').click(function(){
@@ -21,6 +19,7 @@ $(document).ready(function() {
     });
           
     var history = JSON.parse(window.localStorage.getItem('history')) || [];
+
 
     function currentWeather(city) {
         $.ajax({
@@ -33,10 +32,9 @@ $(document).ready(function() {
                     history.push(data.name)
                     // console.log(data.name);
                     window.localStorage.setItem('history',JSON.stringify(history))
-
-                    addRow(city);
                 }
-                console.log(data);
+                // console.log(data);
+               
                 // console.log(data.name);
                 // console.log(data.main.temp);
                 // console.log(data.main.humidity);
@@ -46,8 +44,9 @@ $(document).ready(function() {
                 $('#today').empty();
 
                 // create html content for current weather
+                var currentDate = moment().format('l')
                 var card = $('<div>').addClass('card');
-                var city = $('<h3>').addClass('card-text').text(data.name);
+                var city = $('<h3>').addClass('card-text').text(data.name + " (" + currentDate + ")");
                 // var time = $('h4').addClas('card-text').text(data.list[i].dt_txt);
                 var cardBody = $('<div>').addClass('card-body');
                 var img = $('<img>').attr('src', 'http://openweathermap.org/img/w/' + data.weather[0].icon + '.png');
@@ -67,10 +66,7 @@ $(document).ready(function() {
         });              
     }
 
-    function addRow(text){
-        var searchList = $('<li>').addClass('list-group-item list-group-item-action').text(text);
-        $('.history').append(searchList);
-    }
+    
 
     function weatherForecast(city) {
         $.ajax({
@@ -78,11 +74,10 @@ $(document).ready(function() {
             url: "https://api.openweathermap.org/data/2.5/forecast?q=" + city + '&units=imperial&appid=374a9e846e70146d664eee11c467da0b',
             dataType: 'json',
             success: function(data) {
-                // overwrite existing search content 
-            
-                // loop over all forecasts (by 3-hour increments)
-            
-                // merge and add to page   
+                $("#forecast").append($("<div>").text("5 day Forecast: "))
+                
+
+
             }
         });
     }
@@ -119,4 +114,6 @@ $(document).ready(function() {
             }
         });
     }
+
+    
 })
