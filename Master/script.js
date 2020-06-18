@@ -11,12 +11,6 @@
 
 
 $(document).ready(function() {
-
-    // var text = "foo bar loo zoo moo";
-    //     text = text.toLowerCase()
-    //         .split(' ')
-    //         .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-    //         .join(' ');
     
     $('#search-button').click(function(){
         // take user input and capitalize first letter of every city name
