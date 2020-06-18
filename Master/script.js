@@ -74,7 +74,10 @@ $(document).ready(function() {
             success: function(data) {
                 // console.log(data);
                 $('#forecast').empty();
-                $("#forecast").append($("<div>").text("5 day Forecast: ").css('font-size', '2rem'));
+                $('#forecastHeader').empty();
+                
+                $('#forecastHeader').append($("<div>").text('5 day Forecast: ').css('font-size', '2rem'));
+                var rowForecast = $('#forecast').append($("<div>")).addClass('row');
                                
                     for (var i = 4; i< data.list.length; i+=8){
                     
@@ -84,13 +87,13 @@ $(document).ready(function() {
                             var card = $('<div>').addClass('card bg-primary text-white mb-3');
                             var content = $('<div>').addClass('card-body');
                             var img = $('<img>').attr('src', "http://openweathermap.org/img/w/" + data.list[i].weather[0].icon + '.png');
-                            var date = $("<p>").addClass('card-text').text(data.list[i].dt_txt);
+                            var date = $('<p>').addClass('card-text').text(data.list[i].dt_txt);
                             var tempForecast = $('<p>').addClass('card-text').text('Temp: ' + (Math.floor(data.list[i].main.temp_max)) + ' °F');
                             var humidityForecast = $('<p>').addClass('card-text').text('Humidity: ' + data.list[i].main.humidity + '%');
 
-                            // append to forcast div in html
-                            col.append(card.append(content.append(date, img, tempForecast, humidityForecast)));
-                            $('#forecast').append(col);    
+                            // append to forecast div in html
+                            rowForecast.append(col.append(card.append(content.append(date, img, tempForecast, humidityForecast))));
+                            $('#forecast').append(col); 
                     } 
             }
         });
