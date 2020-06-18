@@ -15,11 +15,20 @@ $(document).ready(function() {
     $('#search-button').click(function(){
         var city = $('#search-value').val();
         $("#search-value").val("");
+        localStorage.setItem("lastSearched", city);
+        $(".list-group").prepend($("<button>").addClass("list-group-item").text(city));
+
         currentWeather(city);
         weatherForecast(city);
     });
-          
-    var history = JSON.parse(window.localStorage.getItem('history')) || [];
+
+    $(document).on("click", ".list-group-item", function(){
+        var city = $(this).text();
+        localStorage.setItem("lastSearched", city);
+
+        currentWeather(city);
+        weatherForecast(city);
+    });
         
    
     function currentWeather(city) {
@@ -28,22 +37,8 @@ $(document).ready(function() {
             url: "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=374a9e846e70146d664eee11c467da0b",
             dataType: "json",
             success: function(data) {
-                console.log(data);
-
-                // history of search
-                if (history.indexOf(city) === -1){
-                    history.push(data.name)
-                    // console.log(data.name);
-                    window.localStorage.setItem('history',JSON.stringify(history))
-
-                    if (history){
-                        for (i = 0; i < history.length; i++) {
-                           var newLi = $('<div>').text(history[i]);
-                            $('.list-group-history').append(newLi);
-                        }
-                    }
-                }
-               
+                // console.log(data);
+             
                 // clear old search
                 $('#today').empty();
 
@@ -77,7 +72,7 @@ $(document).ready(function() {
             url: "https://api.openweathermap.org/data/2.5/forecast?q=" + city + '&units=imperial&appid=374a9e846e70146d664eee11c467da0b',
             dataType: 'json',
             success: function(data) {
-                console.log(data);
+                // console.log(data);
                 $('#forecast').empty();
                 $("#forecast").append($("<div>").text("5 day Forecast: ").css('font-size', '2rem'));
                                
@@ -86,7 +81,7 @@ $(document).ready(function() {
                             // create html elements for object data
                             
                             var col = $('<div>').addClass('col-md-2');
-                            var card = $('<div>').addClass('card bg-primary text-white');
+                            var card = $('<div>').addClass('card bg-primary text-white mb-3');
                             var content = $('<div>').addClass('card-body');
                             var img = $('<img>').attr('src', "http://openweathermap.org/img/w/" + data.list[i].weather[0].icon + '.png');
                             var date = $("<p>").addClass('card-text').text(data.list[i].dt_txt);
@@ -95,11 +90,8 @@ $(document).ready(function() {
 
                             // append to forcast div in html
                             col.append(card.append(content.append(date, img, tempForecast, humidityForecast)));
-                            $('#forecast').append(col);
-                        
-                        
+                            $('#forecast').append(col);    
                     } 
-                
             }
         });
     }
@@ -135,5 +127,9 @@ $(document).ready(function() {
         });
     }
 
-    
+    var lastSearched = localStorage.getItem("lastSearched");
+    if(lastSearched != undefined){
+        currentWeather(lastSearched);
+        weatherForecast(lastSearched);
+}
 })
