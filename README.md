@@ -20,8 +20,10 @@ Bootstrap: https://getbootstrap.com/
 
 
 ## Screenshots
-
+**Desktop
 ![](https://github.com/domdotcom/weatherDashboard/blob/master/Assets/desktop.jpg)
+** Mobile
+![](https://github.com/domdotcom/weatherDashboard/blob/master/Assets/mobile.jpg)
 
 
 
