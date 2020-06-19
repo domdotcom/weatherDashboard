@@ -19,7 +19,7 @@ Bootstrap: https://getbootstrap.com/
 
 
 
-## Screenshote
+## Screenshots
 
 
 
