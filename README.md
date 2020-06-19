@@ -21,7 +21,7 @@ Bootstrap: https://getbootstrap.com/
 
 ## Screenshots
 
-
+![](https://github.com/domdotcom/responsivePortfolio/blob/master/assets/screenshot.jpg)
 
 
 
