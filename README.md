@@ -21,7 +21,7 @@ Bootstrap: https://getbootstrap.com/
 
 ## Screenshots
 
-![]https://github.com/domdotcom/weatherDashboard/blob/master/Assets/desktop.jpg
+![](https://github.com/domdotcom/weatherDashboard/blob/master/Assets/desktop.jpg)
 
 
 
